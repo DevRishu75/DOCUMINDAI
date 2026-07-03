@@ -8,7 +8,6 @@ class PDFLoader:  #we may need extract_image() and other function that's why we 
 
         extracted_text = ""
         for page in document:
-            print(len(page))
             extracted_text+=page.get_text()
         document.close()
         return extracted_text

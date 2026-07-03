@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-
+from app.api.routes.upload import router as upload_router
 app = FastAPI(
     title = "DocuMind AI",
     description = "Document Intelligence platform for AI - Powered document analysis.",
@@ -12,4 +12,4 @@ def root():
         "message": "Welcome to DocuMind AI Backend",
         "status": "Running"
     }
-
+app.include_router(upload_router)

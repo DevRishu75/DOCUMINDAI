@@ -6,5 +6,5 @@ service = FileService()
 
 @router.post("/upload")
 async def upload(file: UploadFile):
-    result = service.process(file)
+    result = service.process_pdf(file)
     return result

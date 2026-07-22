@@ -1,12 +1,10 @@
 import re
 
 class TextCleaner:
+    ''' Cleaning text that was extracted'''
 
-    ''' Cleaning the RAW Text into validated texts so that LLM can understand it better'''
+    def clean(self,text:str)->str:
 
-    def clean(self,text:str) ->str:
-
-        clean_text = re.sub(r"\s+", " ",text) # re.sub(pattern, replacement, text)
-
-        clean_text = clean_text.strip()
+        clean_text = re.sub(r"\+s"," ",text)
+        clean_text = clean_text.split()
         return clean_text

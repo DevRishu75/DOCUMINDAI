@@ -1,11 +1,9 @@
 from app.chunking.splitter import CharacterSplitter
 
-class SplitterFactorty:
-    '''creates the appropriate splitter'''
+class SplitterFactory:
 
     @staticmethod
-    def getSplitter(stratergy:str = "character"):
+    def get_splitter(stratergy:str = "character"):
         if stratergy == "character":
             return CharacterSplitter()
-        raise ValueError( {f"Unknown splitting stratergy{stratergy}"})
-
+        raise ValueError(f"Unknown split stratergy used {stratergy}")

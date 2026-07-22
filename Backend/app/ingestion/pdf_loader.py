@@ -1,13 +1,13 @@
 import fitz
 
-class PDFLoader:  #we may need extract_image() and other function that's why we are using class here instead of function
-    '''Responsible for reading pdf and extracting texts'''
+class PDFLoader:
+    ''' Loading pdf and extracting text from pdf'''
 
-    def extract_text(self,pdf_path:str) ->str:
-        document  = fitz.open(pdf_path)
+    def extract_text(self,pdf_path:str)->str:
+        document = fitz.open(pdf_path)
 
         extracted_text = ""
         for page in document:
-            extracted_text+=page.get_text()
+            extracted_text+= page.get_text()
         document.close()
         return extracted_text

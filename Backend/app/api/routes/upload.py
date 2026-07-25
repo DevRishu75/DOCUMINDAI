@@ -1,11 +1,11 @@
 from fastapi import APIRouter
-from fastapi import UploadFile
+from fastapi import UploadFile, File
 from app.services.file_service import FileService
 
-router = APIRouter()
+upload_router = APIRouter()
 
-@router.post('api/v1/uploads')
-async def Upload(file:UploadFile):
+@upload_router.post('/api/v1/uploads')
+async def Upload(file:UploadFile = File(...)):
     service = FileService()
-    return service.process_pdf()
+    return service.process_pdf(file)
 

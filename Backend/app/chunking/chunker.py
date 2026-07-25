@@ -1,5 +1,5 @@
 from typing import List
-from app.chunking.strategies import SplitterFactorty
+from app.chunking.strategies import SplitterFactory
 
 class Chunker:
       """
@@ -11,7 +11,7 @@ class Chunker:
     - Return a list of chunks.
     """
       def __init__(self, strategy:str = "character"):
-            self.splitter = SplitterFactorty.getSplitter(strategy)
+            self.splitter = SplitterFactory.get_splitter(strategy)
       def chunk(self,text:str)->List[str]:
             '''converted clean text into chunk'''
             return self.splitter.split(text)    

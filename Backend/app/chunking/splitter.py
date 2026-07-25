@@ -1,7 +1,7 @@
 from typing import List
 from app.chunking.base import BaseSplit
 
-class CharacterSplitter:
+class CharacterSplitter(BaseSplit):
     def __init__(self, chunk_size :int = 1000,overlap_chunk :int= 200):
         self.chunk_size = chunk_size
         self.overlap_chunk = overlap_chunk

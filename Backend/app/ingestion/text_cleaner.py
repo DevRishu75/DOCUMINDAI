@@ -5,6 +5,6 @@ class TextCleaner:
 
     def clean(self,text:str)->str:
 
-        clean_text = re.sub(r"\+s"," ",text)
-        clean_text = clean_text.split()
+        clean_text = re.sub(r"\s+", " ", text)
+        clean_text = clean_text.strip()
         return clean_text

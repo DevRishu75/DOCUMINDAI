@@ -2,12 +2,13 @@ from pathlib import Path
 from fastapi import UploadFile
 import shutil
 import uuid
-
+from sqlalchemy.orm import Session
 from app.ingestion.pdf_loader import PDFLoader
 from app.ingestion.text_cleaner import TextCleaner
 from app.chunking.chunker import Chunker
 from app.services.embedding_service import EmbeddingService
 from app.storage.vectorstore import VectorStore
+from app.models.document_model import Document
 # print(PDFLoader)
 class FileService:# Blueprint for creating FileService objects
     """Handles all the files related to --
@@ -33,7 +34,7 @@ class FileService:# Blueprint for creating FileService objects
             shutil.copyfileobj(file.file,buffer)
         
         return file_path
-    def process_pdf(self,file:UploadFile)->dict:
+    def process_pdf(self,file:UploadFile,db:Session)->dict:
         #step 1: save file 
         saved_path = self.save_uploaded_file(file)
         print(f"Saved path : {saved_path}")
@@ -47,7 +48,15 @@ class FileService:# Blueprint for creating FileService objects
         print(f"chunks created : {len(chunks)}")
         embeddings = self.embedding_service.embed_chunks(chunks)
         print(f"embeddings generated : {len(embeddings)}")
-        document_id = str(uuid.uuid4())
+
+        # Create : PostgreSQL document--
+        document = Document(
+            filename = file.filename
+        )
+        db.add(document)
+        db.commit()
+        db.refresh(document)
+        document_id = str(document.id)
         ids = [
             f"{document_id}_chunk_{i}"
             for i in range(len(chunks))

@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.api.routes.upload import upload_router
 from app.api.routes.document import document_router
+from app.api.routes.auth_router import auth_router
 from app.db.init_db import init_db
 app = FastAPI(
     title = "DOCUMIND AI",
@@ -20,3 +21,4 @@ def root():
 #     print(route.path, route.methods)
 app.include_router(upload_router)
 app.include_router(document_router)
+app.include_router(auth_router)

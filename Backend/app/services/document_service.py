@@ -2,14 +2,15 @@ from pathlib import Path
 from sqlalchemy.orm import Session
 from app.models.document_model import Document
 from app.storage.vectorstore import VectorStore
-from app.services.file_service import FileService
+from app.models.user_model import User
 
 class DocumentService:
     UPLOAD_FOLDER = Path('uploads')
     def __init__(self):
         self.vector_store = VectorStore()
-    def get_documents(self,db:Session):
-        documents =  db.query(Document).all()
+        
+    def get_documents(self,db:Session,current_user:User):
+        documents =  db.query(Document).filter(Document.user_id== current_user.user_id).all()
         return [
             {
                 "document_id": document.id,
@@ -18,8 +19,8 @@ class DocumentService:
             }
             for document in documents
         ]
-    def get_document(self,document_id,db:Session):
-        document = db.query(Document).filter(Document.id==str(document_id)).first()
+    def get_document(self,document_id,db:Session,current_user:User):
+        document = db.query(Document).filter(Document.id==document_id, Document.user_id==current_user.user_id).first()
         if document is None:
             return None
         return {
@@ -27,8 +28,8 @@ class DocumentService:
             "filename": document.filename,
             "created_at":document.created_at
         }
-    def delete_document(self,document_id,db:Session):
-        document = db.query(Document).filter(Document.id==str(document_id)).first()
+    def delete_document(self,document_id,db:Session,current_user:User):
+        document = db.query(Document).filter(Document.id==document_id,Document.user_id==current_user.user_id).first()
         if document is None:
             return None
         file_path = self.UPLOAD_FOLDER/document.filename

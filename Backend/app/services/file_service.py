@@ -1,7 +1,6 @@
 from pathlib import Path
 from fastapi import UploadFile
 import shutil
-import uuid
 from sqlalchemy.orm import Session
 from app.ingestion.pdf_loader import PDFLoader
 from app.ingestion.text_cleaner import TextCleaner
@@ -9,6 +8,7 @@ from app.chunking.chunker import Chunker
 from app.services.embedding_service import EmbeddingService
 from app.storage.vectorstore import VectorStore
 from app.models.document_model import Document
+from app.models.user_model import User
 # print(PDFLoader)
 class FileService:# Blueprint for creating FileService objects
     """Handles all the files related to --
@@ -34,7 +34,7 @@ class FileService:# Blueprint for creating FileService objects
             shutil.copyfileobj(file.file,buffer)
         
         return file_path
-    def process_pdf(self,file:UploadFile,db:Session)->dict:
+    def process_pdf(self,file:UploadFile,db:Session,current_user:User)->dict:
         #step 1: save file 
         saved_path = self.save_uploaded_file(file)
         print(f"Saved path : {saved_path}")
@@ -51,7 +51,8 @@ class FileService:# Blueprint for creating FileService objects
 
         # Create : PostgreSQL document--
         document = Document(
-            filename = file.filename
+            filename = file.filename,
+            user_id = current_user.user_id
         )
         db.add(document)
         db.commit()

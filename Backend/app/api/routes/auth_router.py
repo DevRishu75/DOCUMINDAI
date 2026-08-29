@@ -41,5 +41,4 @@ def login(
             status_code=401,
             detail="Invalid email or password"
         )
-
     return result   #FastAPI serializes that Python dictionary into JSON and sends it back to the client.

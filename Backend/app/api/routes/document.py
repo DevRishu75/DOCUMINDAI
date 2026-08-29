@@ -30,7 +30,7 @@ def delete_document(document_id: UUID, db: Session = Depends(get_db), current_us
     service = DocumentService()
     
     # Do NOT call get_document here. delete_document already handles existence check.
-    result = service.delete_document(document_id, db)
+    result = service.delete_document(document_id, db,current_user)
     
     if result is None:
         raise HTTPException(

@@ -1,6 +1,5 @@
 from chromadb import PersistentClient
 
-
 class VectorStore:
     def __init__(self):
       self.client = PersistentClient(path = 'database')
@@ -9,9 +8,11 @@ class VectorStore:
         self.collection.add(
             ids = ids,documents = documents,metadatas = metadatas,embeddings = embeddings
         )
-    def search(self,embeddings,top_k :int = 5):
+    def search(self,embeddings,document_id,top_k :int = 5):
         return self.collection.query(query_embeddings=[embeddings],
-                                     n_results = top_k)
+                                     n_results = top_k, where={
+                                         'document_id':str(document_id)
+                                     })
     def delete_document(self,document_id):
         self.collection.delete(
             where={

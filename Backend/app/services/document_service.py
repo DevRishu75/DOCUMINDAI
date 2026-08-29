@@ -38,9 +38,11 @@ class DocumentService:
         chunk_before_delete = self.vector_store.count_document_chunk(document_id)
         self.vector_store.delete_document(document_id)
         chunk_after_delete =  self.vector_store.count_document_chunk(document_id)
+        if chunk_after_delete !=0:
+            return None
         db.delete(document)
         db.commit()
         return {
-            "document_id":"...",
+            "document_id":str(document.id),
             "message": "Content deleted successfully"
         }

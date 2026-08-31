@@ -37,8 +37,8 @@ class AuthService:
         if not password_valid:
             return None
 
-        access_token = create_access_token(user.user_id)
-        refresh_token = create_refresh_token(user.user_id)
+        access_token = create_access_token(str(user.user_id))
+        refresh_token = create_refresh_token(str(user.user_id))
 
         return {
             "access_token":access_token,

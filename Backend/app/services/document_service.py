@@ -36,8 +36,10 @@ class DocumentService:
         if file_path.exists():
             file_path.unlink()
         chunk_before_delete = self.vector_store.count_document_chunk(document_id)
+        print(chunk_before_delete)
         self.vector_store.delete_document(document_id)
         chunk_after_delete =  self.vector_store.count_document_chunk(document_id)
+        print(chunk_after_delete)
         if chunk_after_delete !=0:
             return None
         db.delete(document)

@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 ask_router = APIRouter()
 
 @ask_router.post('/api/v1/ask/{document_id}')
-async def ask_query(document_id:UUID,request:QueryRequest,db:Session=Depends(get_db),current_user:User=Depends(get_current_user))->str:
+async def ask_query(document_id:UUID,request:QueryRequest,db:Session=Depends(get_db),current_user:User=Depends(get_current_user)):
     retrieval_service = RetrievalService()
     retrieved_chunks = retrieval_service.retrieve(request.question,document_id,db,current_user)
     if retrieved_chunks is None:
